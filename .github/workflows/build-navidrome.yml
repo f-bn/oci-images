@@ -1,0 +1,30 @@
+---
+name: Build Navidrome image
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'navidrome/**'
+      - '!navidrome/README.md'
+      - '.github/workflows/build-navidrome.yml'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Build and push image
+        uses: ./.github/actions/build-oci-image
+        with:
+          name: navidrome
+          version: 0.64.2
+          description: Modern Music Server and Streamer compatible with Subsonic/Airsonic
+          license: GPL-3.0-or-later
+          token: ${{ secrets.GITHUB_TOKEN }}

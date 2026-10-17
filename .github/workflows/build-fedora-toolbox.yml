@@ -1,0 +1,36 @@
+---
+name: Build Fedora toolbox images
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'fedora/toolbox/**'
+      - '!fedora/**/README.md'
+      - '.github/workflows/build-fedora-toolbox.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '35 4 * * 6' # Every Saturday at 04:35am
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    strategy:
+      matrix:
+        version: ['44', '45']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Build and push image
+        uses: ./.github/actions/build-oci-image
+        with:
+          name: fedora
+          version: ${{ matrix.version }}
+          tag: ${{ matrix.version }}-toolbox
+          description: Custom Fedora ${{ matrix.version }} toolbox image
+          build-context: ./fedora/toolbox
+          token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,40 @@
+name: Build PostgreSQL image
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'postgresql/**'
+      - '!postgresql/README.md'
+      - '.github/workflows/build-postgresql.yml'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    strategy:
+      matrix:
+        version: ['17.11','18.6']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Extract PostgreSQL release
+        id: version
+        shell: bash
+        run: echo "release=${VERSION%%.*}" >> $GITHUB_OUTPUT
+        env:
+          VERSION: ${{ matrix.version }}
+
+      - name: Build and push image
+        uses: ./.github/actions/build-oci-image
+        with:
+          name: postgresql
+          version: ${{ matrix.version }}
+          revision: 0
+          description: Custom PostgreSQL ${{ steps.version.outputs.release }} image built from sources with additional extensions and tools
+          license: PostgreSQL
+          token: ${{ secrets.GITHUB_TOKEN }}

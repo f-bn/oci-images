@@ -1,0 +1,30 @@
+---
+name: Build Prometheus image
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'prometheus/**'
+      - '!prometheus/README.md'
+      - '.github/workflows/build-prometheus.yml'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Build and push image
+        uses: ./.github/actions/build-image
+        with:
+          name: prometheus
+          version: 3.15.0
+          description: The Prometheus monitoring system and time series database
+          license: Apache-2.0
+          token: ${{ secrets.GITHUB_TOKEN }}

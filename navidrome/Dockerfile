@@ -1,0 +1,88 @@
+# --- Build stage ---
+FROM cgr.dev/chainguard/wolfi-base:latest AS ffmpeg-build
+
+ARG FFMPEG_VERSION=9.0.2
+
+RUN set -ex ; \
+  apk add --no-cache \
+    autoconf \
+    automake \
+    build-base \
+    lame-dev \
+    libogg-dev \
+    nasm \
+    opus-dev \
+    yasm-dev
+
+WORKDIR /build
+
+ADD https://git.ffmpeg.org/ffmpeg.git#n${FFMPEG_VERSION} /build/
+
+RUN set -ex ; \
+  ./configure \
+    --prefix=/usr \
+    --libdir=/usr/lib \
+    --disable-doc \
+    --disable-network \
+    --disable-autodetect \
+    --disable-everything \
+    --enable-encoder=libmp3lame,libopus,aac \
+    --enable-decoder=flac,libopus,mp3float \
+    --enable-parser=flac,mpegaudio \
+    --enable-muxer=opus,adts,mp3 \
+    --enable-demuxer=flac,mp3 \
+    --enable-filter=aresample \
+    --enable-protocol=file,pipe \
+    --enable-shared \
+    --enable-gpl \
+    --enable-libmp3lame \
+    --enable-libopus ; \
+  make -j "$(nproc)" DESTDIR=./dist install
+
+# --- Build stage ---
+FROM cgr.dev/chainguard/wolfi-base:latest AS build
+
+ARG TARGETOS
+ARG TARGETARCH
+ARG VERSION=0.64.2
+
+WORKDIR /build
+
+ADD https://github.com/navidrome/navidrome/releases/download/v${VERSION}/navidrome_${VERSION}_${TARGETOS}_${TARGETARCH}.tar.gz \
+  /build/navidrome_${VERSION}_${TARGETOS}_${TARGETARCH}.tar.gz
+ADD https://github.com/navidrome/navidrome/releases/download/v${VERSION}/navidrome_checksums.txt \
+  /build/navidrome_checksums.txt
+
+RUN set -ex ; \
+  grep "navidrome_${VERSION}_${TARGETOS}_${TARGETARCH}.tar.gz" navidrome_checksums.txt | sha256sum -c ; \
+  tar -xzf /build/navidrome_${VERSION}_${TARGETOS}_${TARGETARCH}.tar.gz
+
+# --- Final stage ---
+FROM cgr.dev/chainguard/wolfi-base:latest
+
+COPY --from=ffmpeg-build /build/dist/ /
+COPY --from=build --chown=0:0 --chmod=0755\
+  /build/navidrome /usr/bin/navidrome
+
+RUN set -ex ; \
+  addgroup -S -g 999 navidrome ; \
+  adduser -S -D -H -s /bin/false -u 999 -G navidrome navidrome
+
+RUN set -ex ; \
+  install -d -o navidrome -g navidrome -m 0750 /etc/navidrome /var/lib/navidrome ; \
+  install -d -o navidrome -g navidrome -m 0755 /mnt/music
+
+RUN apk add --no-cache opus lame-libs
+
+ENV ND_MUSICFOLDER=/mnt/music
+ENV ND_DATAFOLDER=/var/lib/navidrome
+ENV ND_CACHEFOLDER=${ND_DATAFOLDER}/cache
+ENV ND_CONFIGFILE=/etc/navidrome/navidrome.toml
+
+USER navidrome
+
+EXPOSE 4533/tcp
+
+VOLUME [ "/var/lib/navidrome" ]
+
+ENTRYPOINT [ "/usr/bin/navidrome" ]

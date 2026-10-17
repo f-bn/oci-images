@@ -1,0 +1,32 @@
+---
+name: Build Grafana image
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'grafana/**'
+      - '!grafana/README.md'
+      - '.github/workflows/build-grafana.yml'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Build and push image
+        uses: ./.github/actions/build-oci-image
+        with:
+          name: grafana
+          version: 13.2.4
+          build-extra-args: |
+            REVISION=38252365904
+          description: The open and composable observability and data visualization platform
+          license: AGPL-3.0-or-later
+          token: ${{ secrets.GITHUB_TOKEN }}
