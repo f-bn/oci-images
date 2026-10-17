@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v7.0.1
 
       - name: Build and push image
-        uses: ./.github/actions/build-image
+        uses: ./.github/actions/build-oci-image
         with:
           name: prometheus
           version: 3.15.0
