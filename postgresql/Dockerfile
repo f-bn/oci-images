@@ -35,8 +35,8 @@ ADD https://ftp.postgresql.org/pub/source/v${VERSION}/postgresql-${VERSION}.tar.
 WORKDIR /build
 
 RUN set -ex ; \
-  cat postgresql-${VERSION}.tar.gz.sha256 | sha256sum -c ; \
-  tar -xvzf postgresql-${VERSION}.tar.gz --strip-components=1
+  sha256sum -c postgresql-${VERSION}.tar.gz.sha256 ; \
+  tar -xzf postgresql-${VERSION}.tar.gz --strip-components=1
 
 RUN --mount=type=bind,source=meson-config.ini,target=/build/meson-config.ini \
   set -ex ; \
@@ -175,8 +175,8 @@ ADD https://github.com/pgbackrest/pgbackrest/releases/download/release/${PGBACKR
 WORKDIR /build
 
 RUN set -ex ; \
-  cat pgbackrest-${PGBACKREST_VERSION}.tar.gz.sha256sum | sha256sum -c ; \
-  tar -xvzf pgbackrest-${PGBACKREST_VERSION}.tar.gz \
+  sha256sum -c pgbackrest-${PGBACKREST_VERSION}.tar.gz.sha256sum ; \
+  tar -xzf pgbackrest-${PGBACKREST_VERSION}.tar.gz \
     --strip-components=1 --exclude="pgbackrest-${PGBACKREST_VERSION}/dist"
 
 RUN --mount=type=cache,target=/etc/apk/cache \
