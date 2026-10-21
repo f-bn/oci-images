@@ -165,7 +165,7 @@ RUN set -ex ; \
 # --- Build stage ---
 FROM base-extensions AS build-pgbackrest
 
-ARG PGBACKREST_VERSION="2.59.2"
+ARG PGBACKREST_VERSION="2.60.0"
 
 ADD https://github.com/pgbackrest/pgbackrest/releases/download/release/${PGBACKREST_VERSION}/pgbackrest-${PGBACKREST_VERSION}.tar.gz \
   /build/pgbackrest-${PGBACKREST_VERSION}.tar.gz
