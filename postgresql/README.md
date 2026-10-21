@@ -104,9 +104,6 @@ Some of the included extensions require libraries to be loaded at server start. 
 shared_preload_libraries = 'pg_stat_statements,pg_prewarm,pg_cron,pgvector'
 ```
 
-> [!TIP]
-> Extensions already loaded by default (`pg_stat_statements`, `pg_prewarm`) can be omitted from `shared_preload_libraries` if they are not needed.
-
 Extensions can also be configured directly via this override configuration file if needed:
 
 ```ini
