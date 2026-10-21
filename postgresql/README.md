@@ -56,7 +56,7 @@ This image includes the following PostgreSQL extensions and additional tools:
 
 | Name | Version | Description |
 |------|---------|-------------|
-| [pgBackRest](https://pgbackrest.org/) | 2.59.2 | PostgreSQL backup and restore solution
+| [pgBackRest](https://pgbackrest.org/) | 2.60.0 | PostgreSQL backup and restore solution
 | [pgcopydb](https://github.com/dimitri/pgcopydb) | 0.18 | Copy a Postgres database to a target Postgres server (pg_dump \| pg_restore on steroids)
 
 > [!NOTE]
