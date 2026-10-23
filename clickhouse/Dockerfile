@@ -1,7 +1,7 @@
 # --- Build stage ---
 FROM cgr.dev/chainguard/wolfi-base:latest AS build
 
-ARG VERSION="26.9.19.9"
+ARG VERSION="26.9.25.15"
 ARG CHANNEL="stable"
 
 WORKDIR /build
@@ -23,7 +23,7 @@ RUN set -ex; \
   for package in clickhouse-common-static clickhouse-server clickhouse-client; do \
     archive="${package}-${VERSION}-amd64.tgz" ; \
     sha512sum -c "${archive}.sha512" ; \
-    tar -xzf "$archive" --strip-components=1 ; \
+    tar -xzf "${archive}" --strip-components=1 ; \
   done
 
 # --- Final stage ---
