@@ -1,7 +1,7 @@
 # --- Build stage ---
-FROM docker.io/node:24.22.0 AS build-webui
+FROM docker.io/node:24.22.1 AS build-webui
 
-ARG VERSION="3.15.0"
+ARG VERSION="3.15.1"
 
 ADD --keep-git-dir \
   https://github.com/prometheus/prometheus.git#v${VERSION} /build
@@ -13,7 +13,7 @@ RUN set -ex ; \
   make assets
 
 # --- Build stage ---
-FROM docker.io/golang:1.27.2 AS build-binary
+FROM docker.io/golang:1.27.3 AS build-binary
 
 COPY --from=build-webui /build /build
 
