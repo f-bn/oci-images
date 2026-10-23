@@ -1,9 +1,9 @@
 # --- Build stage ---
-FROM docker.io/golang:1.27.2 AS build
+FROM docker.io/golang:1.27.3 AS build
 
 ARG TARGETOS
 ARG TARGETARCH
-ARG VERSION="2.3.3"
+ARG VERSION="2.3.4"
 
 ADD --keep-git-dir https://github.com/miniflux/v2.git#${VERSION} /build
 

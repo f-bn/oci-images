@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/build-oci-image
         with:
           name: miniflux
-          version: 2.3.3
+          version: 2.3.4
           description: Minimalist and opinionated feed reader
           license: Apache-2.0
           token: ${{ secrets.GITHUB_TOKEN }}
