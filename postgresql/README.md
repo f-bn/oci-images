@@ -49,8 +49,8 @@ This image includes the following PostgreSQL extensions and additional tools:
 | [pgvector](https://github.com/pgvector/pgvector) | 0.8.7 | Open-source vector similarity search for Postgres |
 | [pg_stat_monitor](https://github.com/percona/pg_stat_monitor) | 2.4.0 | Query Performance Monitoring Tool for PostgreSQL |
 | [pg_textsearch](https://github.com/timescale/pg_textsearch) | 1.5.1 | Full-text search extension for PostgreSQL |
-| [timescaledb](https://github.com/timescale/timescaledb) | 2.30.2 | Enables scalable inserts and complex queries for time-series data |
-| [HypoPG](https://github.com/HypoPG/hypopg) | 1.4.3 | Create hypothetical indexes for PostgreSQL query planning |
+| [timescaledb](https://github.com/timescale/timescaledb) | 2.32.0 | Enables scalable inserts and complex queries for time-series data |
+| [HypoPG](https://github.com/HypoPG/hypopg) | 1.4.5 | Create hypothetical indexes for PostgreSQL query planning |
 
 #### Additional tools
 

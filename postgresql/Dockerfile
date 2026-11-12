@@ -136,7 +136,7 @@ RUN set -ex ; \
 # --- Build stage ---
 FROM base-extensions AS build-timescaledb
 
-ARG TIMESCALEDB_VERSION="2.30.2"
+ARG TIMESCALEDB_VERSION="2.32.0"
 
 ADD https://github.com/timescale/timescaledb.git#${TIMESCALEDB_VERSION} /build
 
@@ -152,7 +152,7 @@ RUN set -ex ; \
 # --- Build stage ---
 FROM base-extensions AS build-hypopg
 
-ARG HYPOPG_VERSION="1.4.3"
+ARG HYPOPG_VERSION="1.4.5"
 
 ADD https://github.com/HypoPG/hypopg.git#${HYPOPG_VERSION} /build
 
@@ -204,7 +204,7 @@ RUN make DESTDIR="${PWD}/dist" -j"$(nproc)" install
 # --- Final stage ---
 FROM cgr.dev/chainguard/wolfi-base:latest
 
-ARG VERSION="18.6"
+ARG VERSION="18.7"
 
 # Compatibility environment variables
 ENV PG_MAJOR="${VERSION%%.*}"
