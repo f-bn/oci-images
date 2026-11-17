@@ -1,9 +1,9 @@
 # --- Build stage ---
-FROM docker.io/golang:1.26.9 AS build
+FROM docker.io/golang:1.26.11 AS build
 
 ARG TARGETOS
 ARG TARGETARCH
-ARG VERSION="2.11.7"
+ARG VERSION="2.11.9"
 
 ENV CADDY_VERSION="v${VERSION}"
 
