@@ -1,9 +1,9 @@
 # --- Build stage ---
-FROM docker.io/golang:1.27.2 AS build
+FROM docker.io/golang:1.27.4 AS build
 
 ARG TARGETOS
 ARG TARGETARCH
-ARG VERSION="1.40.2"
+ARG VERSION="1.40.3"
 
 ENV GOOS=${TARGETOS}
 ENV GOARCH=${TARGETARCH}

@@ -23,7 +23,7 @@ jobs:
         uses: ./.github/actions/build-oci-image
         with:
           name: telegraf
-          version: 1.40.2
+          version: 1.40.3
           description: Custom Telegraf image with restricted set of plugins embedded
           license: MIT
           token: ${{ secrets.GITHUB_TOKEN }}
